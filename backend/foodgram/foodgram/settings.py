@@ -1,18 +1,19 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-from django.core.management.utils import get_random_secret_key
-from pathlib import Path
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(os.path.join(BASE_DIR.parent.parent, 'infra/.env'), verbose=True)
 
-SECRET_KEY = os.getenv('SECRET_KEY', default=get_random_secret_key())
+SECRET_KEY = 'django-insecure-$(6k__+o93&uy@iiwzp&15*q)1bg9xy+x!0gl$7x@q-#e-&pe-'
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', ['*', ])]
+ALLOWED_HOSTS = ['*']
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -24,12 +25,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
-    'sorl.thumbnail',
     'django_filters',
-    'ingredients.apps.IngredientsConfig',
-    'recipes.apps.RecipesConfig',
-    'tags.apps.TagsConfig',
-    'users.apps.UsersConfig',
+    'api',
+    'users',
+    'recipes',
 ]
 
 MIDDLEWARE = [
@@ -62,16 +61,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'foodgram.wsgi.application'
 
+
+
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT')
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-} 
+}
+
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -88,9 +87,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'Europe/Moscow'
+
+
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -98,27 +100,46 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'users.User'
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
-    'SEARCH_PARAM': 'name'
+    'DEFAULT_PAGINATION_CLASS': 'api.pagination.CustumPagination',
+    'PAGE_SIZE': 6,
 }
 
 DJOSER = {
-    'LOGIN_FIELD': 'email',
+    'HIDE_USERS': False,
+
     'SERIALIZERS': {
-        'user_create': 'users.serializers.CustomUserCreateSerializer',
-        'user': 'users.serializers.CustomUserSerializer',
-        'current_user': 'users.serializers.CustomUserSerializer',
+        'user': 'api.serializers.MeUserSerializer',
+        'current_user': 'api.serializers.MeUserSerializer',
+    },
+
+    'PERMISSIONS': {
+        'user': ['rest_framework.permissions.AllowAny'],
+        'user_list': ['rest_framework.permissions.AllowAny'],
+        'user_delete': ['rest_framework.permissions.IsAdminUser'],
+        'set_username': ['rest_framework.permissions.IsAdminUser'],
     },
 }
+
+EMPTY_VALUE_DISPLAY = '-пусто-'
