@@ -10,7 +10,7 @@ from api.filters import NameSearchFilter, RecipeFilter
 from api.pagination import CustumPagination
 from api.permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
 from api.serializers import (FollowSerializer, IngredientSerializer,
-                             MeUserSerializer, RecipeCreateSerializer,
+                             MeUserSerializer, RecipeWriteSerializer,
                              RecipeReadSerializer, RecipeShortSerializer,
                              TagSerializer)
 from api.utils import download_cart
@@ -20,7 +20,7 @@ from users.models import Follow, User
 
 
 class MeUserViewSet(UserViewSet):
-    '''Вьюсет для пользователей и подписок'''
+    """Вьюсет для пользователей и подписок"""
 
     queryset = User.objects.all()
     serializer_class = MeUserSerializer
@@ -70,7 +70,7 @@ class MeUserViewSet(UserViewSet):
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
-    '''Вьюсет тегов'''
+    """Вьюсет тегов"""
 
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
@@ -79,7 +79,7 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
-    '''Вьюсет ингридиентов'''
+    """Вьюсет ингридиентов"""
 
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
@@ -90,7 +90,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
-    '''Вюсет рецептов'''
+    """Вюсет рецептов"""
 
     queryset = Recipe.objects.all()
     permission_classes = (IsAuthorOrReadOnly,)
@@ -104,7 +104,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:
             return RecipeReadSerializer
-        return RecipeCreateSerializer
+        return RecipeWriteSerializer
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

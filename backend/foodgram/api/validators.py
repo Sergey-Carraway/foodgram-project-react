@@ -1,10 +1,10 @@
 import datetime as dt
 
+
 from django.core.exceptions import ValidationError
 
-
 def validate_username(value):
-    '''Валидатор username'''
+    """Валидатор username"""
 
     if value.lower() == 'me':
         raise ValidationError(
@@ -13,7 +13,7 @@ def validate_username(value):
         )
 
 def validate_year(value):
-    '''Валидатор date'''
+    """Валидатор date"""
 
     year = dt.date.today().year
     if not (value <= year):
@@ -23,7 +23,7 @@ def validate_year(value):
 def validate_ingredients(self, value):
     if not value:
         raise ValidationError('Нужно добавить ингридиент.')
-    for i in value:
-        if i['amount'] <= 0:
+    for item in value:
+        if item['amount'] <= 0:
             raise ValidationError('Колличество должго быть больше 0')
     return value
