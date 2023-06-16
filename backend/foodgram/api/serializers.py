@@ -7,8 +7,7 @@ from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 
 from api.validators import validate_ingredients
-from recipes.models import (Favourite, Ingredient, Recipe, RecipeIngredients,
-                            ShoppingCart, Tag)
+from recipes.models import (Ingredient, Recipe, RecipeIngredients, Tag)
 from users.models import Follow, User
 
 
