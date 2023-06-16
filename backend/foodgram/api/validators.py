@@ -3,6 +3,7 @@ import datetime as dt
 
 from django.core.exceptions import ValidationError
 
+
 def validate_username(value):
     """Валидатор username"""
 
@@ -12,6 +13,7 @@ def validate_username(value):
             params={'value': value},
         )
 
+
 def validate_year(value):
     """Валидатор date"""
 
@@ -19,6 +21,7 @@ def validate_year(value):
     if not (value <= year):
         raise ValidationError('Дата указана некорректно!')
     return value
+
 
 def validate_ingredients(self, value):
     if not value:

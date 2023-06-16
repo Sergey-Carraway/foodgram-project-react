@@ -131,10 +131,10 @@ class RecipeWriteSerializer(ModelSerializer):
     tags = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(),
                                               many=True)
     author = MeUserSerializer(read_only=True)
-    ingredients = IngredientInRecipeCreateSerializer(many=True, 
-                                                     validators=(validate_ingredients,))
+    ingredients = IngredientInRecipeCreateSerializer(many=True,
+                                                     validators=
+                                                     (validate_ingredients,))
     image = Base64ImageField()
-    
 
     class Meta:
         model = Recipe
@@ -151,7 +151,7 @@ class RecipeWriteSerializer(ModelSerializer):
         context = {'request': request}
         return RecipeReadSerializer(instance,
                                     context=context).data
-    
+
     @transaction.atomic
     def create_ingridients(self, ingredients, recipe):
         RecipeIngredients.objects.bulk_create(
