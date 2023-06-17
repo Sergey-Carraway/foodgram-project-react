@@ -34,5 +34,5 @@ def download_cart(request):
     page.showPage()
     page.save()
     buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, 
+    return FileResponse(buffer, as_attachment=True,
                         filename="shopping_list.pdf")
