@@ -18,8 +18,7 @@ class MeUserSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = ("id", "email", "username", "first_name", "last_name",
-                  "is_subscribed")
+        fields = ("id", "email", "username", "first_name", "last_name", "is_subscribed")
 
     def get_is_subscribed(self, obj):
         user = self.context.get("request").user
@@ -31,8 +30,7 @@ class MeUserSerializer(UserSerializer):
 class FollowSerializer(MeUserSerializer):
     """Сериализатор подписoк."""
 
-    recipes_count = serializers.IntegerField(source="recipes.count",
-                                             read_only=True)
+    recipes_count = serializers.IntegerField(source="recipes.count", read_only=True)
     recipes = SerializerMethodField(method_name="get_recipes")
     is_subscribed = serializers.BooleanField()
 
@@ -52,8 +50,7 @@ class FollowSerializer(MeUserSerializer):
 
     def get_recipes(self, obj):
         recipes = obj.recipes.all()
-        serializer = RecipeShortSerializer(recipes, many=True,
-                                           context=self.context)
+        serializer = RecipeShortSerializer(recipes, many=True, context=self.context)
         return serializer.data
 
 
@@ -88,8 +85,7 @@ class IngredientInRecipeCreateSerializer(ModelSerializer):
 
     id = PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
     name = serializers.ReadOnlyField(source="ingredient.name")
-    measurement_unit = serializers.ReadOnlyField(
-        source="ingredient.measurement_unit")
+    measurement_unit = serializers.ReadOnlyField(source="ingredient.measurement_unit")
 
     class Meta:
         model = RecipeIngredients
@@ -144,8 +140,7 @@ class RecipeReadSerializer(ModelSerializer):
 class RecipeWriteSerializer(ModelSerializer):
     """Сериализатор создания рецепта"""
 
-    tags = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(),
-                                              many=True)
+    tags = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), many=True)
     author = MeUserSerializer(read_only=True)
     ingredients = IngredientInRecipeCreateSerializer(
         many=True, validators=(validate_ingredients,)

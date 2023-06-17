@@ -9,8 +9,7 @@ from users.models import User
 class Tag(models.Model):
     """Модель тегов"""
 
-    name = models.CharField(verbose_name="Имя тега", max_length=200,
-                            unique=True)
+    name = models.CharField(verbose_name="Имя тега", max_length=200, unique=True)
     color = models.CharField(verbose_name="Цвет", max_length=7, unique=True)
     slug = models.SlugField(verbose_name="Слаг", max_length=200, unique=True)
 
@@ -67,8 +66,7 @@ class Recipe(models.Model):
         validators=[MinValueValidator(1, message="Минимальное значение 1!")],
     )
     date = models.DateTimeField(
-        verbose_name="Дата публикации", validators=(validate_year,),
-        auto_now_add=True
+        verbose_name="Дата публикации", validators=(validate_year,), auto_now_add=True
     )
 
     class Meta:
@@ -127,8 +125,7 @@ class Favourite(models.Model):
         verbose_name = "Избранное"
         verbose_name_plural = "Избранные"
         constraints = (
-            UniqueConstraint(fields=("user", "recipe"),
-                             name="unique_favourite"),
+            UniqueConstraint(fields=("user", "recipe"), name="unique_favourite"),
         )
 
     def __str__(self):
@@ -145,16 +142,14 @@ class ShoppingCart(models.Model):
         related_name="shopping",
     )
     recipe = models.ForeignKey(
-        Recipe, verbose_name="Рецепт", on_delete=models.CASCADE,
-        related_name="shopping"
+        Recipe, verbose_name="Рецепт", on_delete=models.CASCADE, related_name="shopping"
     )
 
     class Meta:
         verbose_name = "Покупка"
         verbose_name_plural = "Список Покупок"
         constraints = (
-            UniqueConstraint(fields=("user", "recipe"),
-                             name="unique_shopping_cart"),
+            UniqueConstraint(fields=("user", "recipe"), name="unique_shopping_cart"),
         )
 
     def __str__(self):
