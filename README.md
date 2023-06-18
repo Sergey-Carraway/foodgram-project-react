@@ -34,3 +34,66 @@ python manage.py collectstatic # Собираем статику в контей
 # ТЕСТИМ ПРОЕКТ ЛОКАЛЬНО ВНУТРИ РАБОТАЮЩИХ КОНТЕЙНЕРОВ
 ```
 ---
+### **Запуск проекта на сервере в контейнерах:**
+```
+# МЕНЯЕМ БАЗУ SQLITE НА POSTGRES
+pip install python-dotenv
+# ИЗМЕНЯЕМ НАСТРОЙКИ БД В settings.pe
+docker build -t rishat1991/foodgram_frontend . # Собрали образ foodgram_frontend
+docker build -t rishat1991/foodgram_backend . # Собрали образ foodgram_backend
+docker push serzhkaravaev/foodgram_frontend # Запушили DockerHub
+docker push serzhkaravaev/foodgram_backend # Запушили DockerHub
+ssh rishat@84.252.143.251 # Заходим на ВМ
+mkdir Dev # Создаем директорию Dev
+cd Dev/ # Переходим Dev
+mkdir footgram # Создаем директорию  footgram
+scp -r infra rishat@84.252.143.251:/home/rishat/Dev/foodgram # Копируем infra/ на сервер
+scp -r docs serzh-karavaev@84.252.143.251:/home/rishat/Dev/foodgram # Копируем docs/ на сервер
+# ПИШЕМ foodgram.yml
+sudo systemctl stop nginx
+git add .
+git commit -m""
+git push
+```
+
+---
+
+### **шаблон наполнения env-файла**
+
+```
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=serzh
+DB_HOST=db
+DB_PORT=5432
+SECRET_KEY="django-insecure-$(6k__+o93&uy@iiwzp&15*q)1bg9xy+x!0gl$7x@q-#e-&pe-"
+
+```
+---
+### **Actions secrets**
+
+```
+DB_ENGINE
+DB_HOST
+DB_NAME
+DB_PORT
+DOCKER_PASSWORD
+DOCKER_USERNAME
+HOST
+POSTGRES_PASSWORD
+POSTGRES_USER
+SECRET_KEY
+SSH_KEY
+TELEGRAM_TO
+TELEGRAM_TOKEN
+USER
+
+```
+
+---
+
+### **Спецификация API Foodgram**
+Документация: http://localhost/api/docs/
+
+---
