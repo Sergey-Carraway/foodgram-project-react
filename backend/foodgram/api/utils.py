@@ -1,26 +1,36 @@
-from django.http import HttpResponse
-from datetime import datetime as dt
+from io import BytesIO
+
+from django.http import FileResponse
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
+
+from api.serializers import RecipeIngredients
 
 
-def download_cart(self, request, ingredients):
-    user = self.request.user
-    filename = f'{user.username}_shopping_list.txt'
-
-    today = dt.today()
-    shopping_list = (
-        f'Список покупок для пользователя: {user.username}\n\n'
-        f'Дата: {today:%Y-%m-%d}\n\n'
-    )
-    shopping_list += '\n'.join([
-        f'- {ingredient["ingredient__name"]} '
-        f'({ingredient["ingredient__measurement_unit"]})'
-        f' - {ingredient["amount"]}'
-        for ingredient in ingredients
-    ])
-    shopping_list += f'\n\nFoodgram ({today:%Y})'
-
-    response = HttpResponse(
-        shopping_list, content_type='text.txt; charset=utf-8'
-    )
-    response['Content-Disposition'] = f'attachment; filename={filename}'
-    return response
+def download_cart(request):
+    ingredients = RecipeIngredients.objects.filter(
+        recipe__shopping__user=request.user
+    ).values_list("ingredient__name", "ingredient__measurement_unit", "amount")
+    cart_list = {}
+    for item in ingredients:
+        name = item[0]
+        if name not in cart_list:
+            cart_list[name] = {"measurement_unit": item[1], "amount": item[2]}
+        else:
+            cart_list[name]["amount"] += item[2]
+    height = 700
+    buffer = BytesIO()
+    pdfmetrics.registerFont(TTFont("arial", "static/arial.ttf"))
+    page = canvas.Canvas(buffer)
+    page.setFont("arial", 13)
+    page.drawString(100, 750, "Список покупок")
+    for i, (name, data) in enumerate(cart_list.items(), start=1):
+        page.drawString(
+            80, height, f"{i}. {name} – {data['amount']} {data['measurement_unit']}"
+        )
+        height -= 25
+    page.showPage()
+    page.save()
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename="shopping_list.pdf")
