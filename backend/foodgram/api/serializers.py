@@ -193,7 +193,7 @@ class RecipeWriteSerializer(ModelSerializer):
         ingredients = validated_data.pop("ingredients")
         tags = validated_data.pop("tags")
         recipe = Recipe.objects.create(**validated_data)
-        self.create_ingridients(ingredients, recipe)
+        self.create_ingredients(ingredients, recipe)
         recipe.tags.set(tags)
         return recipe
 
@@ -204,5 +204,5 @@ class RecipeWriteSerializer(ModelSerializer):
         ingredients = validated_data.pop("ingredients", None)
         if ingredients is not None:
             instance.ingredients.clear()
-            self.create_ingridients(ingredients, instance)
+            self.create_ingredients(ingredients, instance)
         return super().update(instance, validated_data)
