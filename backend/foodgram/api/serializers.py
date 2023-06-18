@@ -143,7 +143,7 @@ class RecipeWriteSerializer(ModelSerializer):
     tags = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), many=True)
     author = MeUserSerializer(read_only=True)
     ingredients = IngredientInRecipeCreateSerializer(
-        many=True, validators=(validate_ingredients,)
+        many=True
     )
     image = Base64ImageField()
 
@@ -169,6 +169,14 @@ class RecipeWriteSerializer(ModelSerializer):
         request = self.context.get("request")
         context = {"request": request}
         return RecipeReadSerializer(instance, context=context).data
+
+    def validate_ingredients(self, value):
+        if not value:
+            raise ValidationError('Нужно добавить ингридиент.')
+        for i in value:
+            if i['amount'] <= 0:
+                raise ValidationError('Колличество должго быть больше 0')
+        return value
 
     @transaction.atomic
     def create_ingredients(self, ingredients, recipe):
