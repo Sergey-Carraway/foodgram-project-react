@@ -6,7 +6,6 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 
-from api.validators import validate_ingredients
 from recipes.models import Ingredient, Recipe, RecipeIngredients, Tag
 from users.models import Follow, User
 
@@ -142,9 +141,7 @@ class RecipeWriteSerializer(ModelSerializer):
 
     tags = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), many=True)
     author = MeUserSerializer(read_only=True)
-    ingredients = IngredientInRecipeCreateSerializer(
-        many=True
-    )
+    ingredients = IngredientInRecipeCreateSerializer(many=True)
     image = Base64ImageField()
 
     class Meta:
@@ -172,10 +169,10 @@ class RecipeWriteSerializer(ModelSerializer):
 
     def validate_ingredients(self, value):
         if not value:
-            raise ValidationError('Нужно добавить ингридиент.')
-        for i in value:
-            if i['amount'] <= 0:
-                raise ValidationError('Колличество должго быть больше 0')
+            raise ValidationError("Нужно добавить ингридиент.")
+        for item in value:
+            if item["amount"] <= 0:
+                raise ValidationError("Колличество должго быть больше 0")
         return value
 
     @transaction.atomic
