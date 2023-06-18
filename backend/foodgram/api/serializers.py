@@ -173,8 +173,8 @@ class RecipeWriteSerializer(ModelSerializer):
     def validate_ingredients(self, value):
         if not value:
             raise ValidationError('Нужно добавить ингридиент.')
-        for item in value:
-            if item['amount'] <= 0:
+        for i in value:
+            if i['amount'] <= 0:
                 raise ValidationError('Колличество должго быть больше 0')
         return value
 
