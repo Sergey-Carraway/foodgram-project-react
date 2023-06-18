@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from api.serializers import RecipeIngredients
 
 
-def download_cart(self, request):
+def download_cart(request):
     ingredients = RecipeIngredients.objects.filter(
         recipe__shopping__user=request.user).values(
             'ingredient__name', 'ingredient__measurement_unit').annotate(
