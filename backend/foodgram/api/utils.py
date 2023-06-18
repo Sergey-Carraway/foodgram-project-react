@@ -18,7 +18,7 @@ def download_cart(request):
         if name not in cart_list:
             cart_list[name] = {"measurement_unit": item[1], "amount": item[2]}
         else:
-            cart_list[name]["amount"] += item[2]
+            cart_list[name]["amount"] += str(item[2])
     height = 700
     buffer = BytesIO()
     pdfmetrics.registerFont(TTFont("arial", "static/arial.ttf"))
