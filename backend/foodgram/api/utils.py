@@ -8,7 +8,6 @@ from reportlab.pdfgen import canvas
 from api.serializers import RecipeIngredients
 
 
-# Работай
 def download_cart(request):
     ingredients = RecipeIngredients.objects.filter(
         recipe__shopping__user=request.user
@@ -22,7 +21,7 @@ def download_cart(request):
             cart_list[name]["amount"] += int(item[2])
     height = 700
     buffer = BytesIO()
-    pdfmetrics.registerFont(TTFont("arial", "../static/arial.ttf"))
+    pdfmetrics.registerFont(TTFont("arial", "static/arial.ttf"))
     page = canvas.Canvas(buffer)
     page.setFont("arial", 13)
     page.drawString(100, 750, "Список покупок")
