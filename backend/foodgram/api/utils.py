@@ -8,6 +8,7 @@ from reportlab.pdfgen import canvas
 from api.serializers import RecipeIngredients
 
 
+# Работай
 def download_cart(request):
     ingredients = RecipeIngredients.objects.filter(
         recipe__shopping__user=request.user
