@@ -38,7 +38,7 @@ python manage.py collectstatic # Собираем статику в контей
 ```
 # МЕНЯЕМ БАЗУ SQLITE НА POSTGRES
 pip install python-dotenv
-# ИЗМЕНЯЕМ НАСТРОЙКИ БД В settings.pe
+# ИЗМЕНЯЕМ НАСТРОЙКИ БД В settings.py
 docker build -t serzhkaravaev/foodgram_frontend . # Собрали образ foodgram_frontend
 docker build -t serzhkaravaev/foodgram_backend . # Собрали образ foodgram_backend
 docker push serzhkaravaev/foodgram_frontend # Запушили DockerHub
