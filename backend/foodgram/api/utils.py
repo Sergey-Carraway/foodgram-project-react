@@ -22,7 +22,7 @@ def download_cart(request):
             cart_list[name]["amount"] += int(item[2])
     height = 700
     buffer = BytesIO()
-    pdfmetrics.registerFont(TTFont("arial", "arial.ttf"))
+    pdfmetrics.registerFont(TTFont("arial", "static/arial.ttf"))
     page = canvas.Canvas(buffer)
     page.setFont("arial", 13)
     page.drawString(100, 750, "Список покупок")
