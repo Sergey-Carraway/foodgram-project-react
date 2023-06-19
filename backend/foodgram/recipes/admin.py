@@ -28,7 +28,7 @@ class RecipeIngredientsInLine(admin.TabularInline):
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ("pk", "name", "author", "text", "cooking_time", "image",
                     "date")
-    search_fields = ("name", "author__username", "text", "cooking_time")
+    search_fields = ("name", "author__recipes", "text", "cooking_time")
     list_filter = ("name", "author", "tags")
     readonly_fields = ("favarite_count",)
     inlines = (RecipeIngredientsInLine,)
@@ -63,6 +63,6 @@ class FavouriteAdmin(admin.ModelAdmin):
         "recipe",
     )
     search_fields = (
-        "user",
-        "recipe",
+        "user__username",
+        "recipe__name",
     )
