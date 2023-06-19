@@ -6,7 +6,8 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 
-from recipes.models import Ingredient, Recipe, RecipeIngredients, Tag
+from recipes.models import (Favourite, Ingredient, Recipe, RecipeIngredients,
+                            ShoppingCart, Tag)
 from users.models import Follow, User
 
 
@@ -131,13 +132,13 @@ class RecipeReadSerializer(ModelSerializer):
         user = self.context["request"].user
         if user.is_anonymous:
             return False
-        return user.favorites.filter(recipe=obj).exists()
+        return Favourite.objects.filter(user=user, recipe=obj).exists()
 
     def get_is_in_shopping_cart(self, obj):
         user = self.context["request"].user
         if user.is_anonymous:
             return False
-        return user.shopping.filter(recipe=obj).exists()
+        return ShoppingCart.objects.filter(user=user, recipe=obj).exists()
 
 
 class RecipeWriteSerializer(ModelSerializer):
@@ -177,7 +178,7 @@ class RecipeWriteSerializer(ModelSerializer):
             raise ValidationError("Нужно добавить ингридиент.")
         for item in value:
             if item["amount"] <= 0:
-                raise ValidationError("Колличество должго быть больше 0")
+                raise ValidationError("Колличество должно быть больше 0")
         return value
 
     @transaction.atomic
