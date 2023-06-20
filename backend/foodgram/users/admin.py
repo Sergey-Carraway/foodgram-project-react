@@ -27,4 +27,4 @@ class UsersAdmin(admin.ModelAdmin):
 @admin.register(Follow)
 class FolowAdmin(admin.ModelAdmin):
     list_display = ("pk", "user", "author")
-    search_fields = ("user_username", "author")
+    search_fields = ("user__username", "author")
