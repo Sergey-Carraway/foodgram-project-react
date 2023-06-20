@@ -39,16 +39,6 @@ class RecipeAdmin(admin.ModelAdmin):
         return obj.favorites.count()
 
 
-"""
-    def get_search_results(self, request, queryset, search_term):
-        queryset, use_distinct = super().get_search_results(request, queryset,
-                                                            search_term)
-        queryset |= self.model.objects.filter(
-            ingredient__name__icontains=search_term)
-        return queryset, use_distinct
-"""
-
-
 @admin.register(ShoppingCart)
 class ShoppingCartAdmin(admin.ModelAdmin):
     list_display = (
