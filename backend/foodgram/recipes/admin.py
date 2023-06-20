@@ -28,7 +28,7 @@ class RecipeIngredientsInLine(admin.TabularInline):
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ("pk", "name", "author", "text", "cooking_time", "image",
                     "date")
-    search_fields = ("name", "author", "text",)
+    search_fields = ("name", "author__username", "text", "cooking_time")
     list_filter = ("name", "author", "tags")
     readonly_fields = ("favarite_count",)
     inlines = (RecipeIngredientsInLine,)
@@ -39,11 +39,14 @@ class RecipeAdmin(admin.ModelAdmin):
         return obj.favorites.count()
 
 
-@admin.register(RecipeIngredients)
-class RecipeIngridientsAdmin(admin.ModelAdmin):
-    list_display = ("pk", "recipe", "ingredient", "amount")
-    search_fields = ("recipe", "ingredient")
-    list_filter = ("recipe", "ingredient")
+"""
+    def get_search_results(self, request, queryset, search_term):
+        queryset, use_distinct = super().get_search_results(request, queryset,
+                                                            search_term)
+        queryset |= self.model.objects.filter(
+            ingredient__name__icontains=search_term)
+        return queryset, use_distinct
+"""
 
 
 @admin.register(ShoppingCart)
