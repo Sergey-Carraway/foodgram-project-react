@@ -28,9 +28,9 @@ class RecipeIngredientsInLine(admin.TabularInline):
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ("pk", "name", "author", "text", "cooking_time", "image",
                     "date")
-    search_fields = ("name", "author__username", "text")
-    list_filter = ("author__username", "tags__name")
-    readonly_fields = ("favourite_count",)
+    search_fields = ("name", "author__username", "text", "cooking_time",)
+    list_filter = ("name", "author__username", "tags")
+    readonly_fields = ("favarite_count",)
     inlines = (RecipeIngredientsInLine,)
 
     @admin.display(description="Количество избранных")
@@ -56,8 +56,8 @@ class ShoppingCartAdmin(admin.ModelAdmin):
         "recipe",
     )
     search_fields = (
-        "user",
-        "recipe",
+        "user__username",
+        "recipe__name",
     )
 
 
