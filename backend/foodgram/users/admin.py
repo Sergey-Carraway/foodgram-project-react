@@ -31,3 +31,8 @@ class UsersAdmin(admin.ModelAdmin):
     def follows_count(self, obj):
         return obj.following.count()
 
+
+@admin.register(Follow)
+class FolowAdmin(admin.ModelAdmin):
+    list_display = ("pk", "user", "author")
+    search_fields = ["user", "author__username"]
