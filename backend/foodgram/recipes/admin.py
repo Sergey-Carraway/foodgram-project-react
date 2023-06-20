@@ -38,7 +38,7 @@ class RecipeAdmin(admin.ModelAdmin):
         """Получаем количество избранных"""
         return obj.favorites.count()
 
-    favarite_count.short_description = "favarite_count"
+    favarite_count.short_description = "Количество избранных"
 
 
 @admin.register(ShoppingCart)

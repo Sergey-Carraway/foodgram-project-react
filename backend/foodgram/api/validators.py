@@ -22,7 +22,7 @@ def validate_year(value):
     return value
 
 
-def validate_ingredients(self, value):
+def validate_ingredients(value):
     if not value:
         raise ValidationError("Нужно добавить ингридиент.")
     for item in value:
@@ -31,7 +31,7 @@ def validate_ingredients(self, value):
     return value
 
 
-def validate_time(self, value):
+def validate_time(value):
     if not value:
         raise ValidationError("Нужно написать время приготовления")
     for item in value:
