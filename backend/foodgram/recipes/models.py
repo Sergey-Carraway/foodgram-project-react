@@ -3,7 +3,8 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint
 
-from api.validators import validate_year, validate_cooking_time
+from api.validators import (validate_ingredients, validate_year,
+                            validate_cooking_time)
 from users.models import User
 
 
@@ -57,6 +58,7 @@ class Recipe(models.Model):
         verbose_name="Ингридиенты",
         through="RecipeIngredients",
         related_name="recipes",
+        validators=(validate_ingredients,),
     )
 
     tags = models.ManyToManyField(
@@ -70,14 +72,6 @@ class Recipe(models.Model):
         verbose_name="Дата публикации", validators=(validate_year,),
         auto_now_add=True
     )
-
-    def validate_ingredients(value):
-        if not value:
-            raise ValidationError("Нужно добавить ингридиент.")
-        for item in value:
-            if item["amount"] <= 0:
-                raise ValidationError("Колличество должно быть больше 0")
-        return value
 
     class Meta:
         verbose_name = "Рецепт"
