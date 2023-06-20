@@ -23,8 +23,11 @@ class UsersAdmin(admin.ModelAdmin):
     )
     empty_value_display = EMPTY_VALUE_DISPLAY
 
+    @admin.display(description='Рецепты пользователя')
+    def recipe_count(self, obj):
+        return obj.recipes.count()
 
-@admin.register(Follow)
-class FolowAdmin(admin.ModelAdmin):
-    list_display = ("pk", "user", "author")
-    search_fields = ["user", "author__username"]
+    @admin.display(description='Подписчики пользователя')
+    def follows_count(self, obj):
+        return obj.following.count()
+
