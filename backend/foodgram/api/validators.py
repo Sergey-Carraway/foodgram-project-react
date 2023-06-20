@@ -27,5 +27,14 @@ def validate_ingredients(self, value):
         raise ValidationError("Нужно добавить ингридиент.")
     for item in value:
         if item["amount"] <= 0:
-            raise ValidationError("Колличество должго быть больше 0")
+            raise ValidationError("Колличество должно быть больше 0")
+    return value
+
+
+def validate_time(self, value):
+    if not value:
+        raise ValidationError("Нужно написать примерное время приготовления")
+    for item in value:
+        if item["amount"] <= 0:
+            raise ValidationError("Каждое приготовление должно занимать не меньше 1 минуты")
     return value
