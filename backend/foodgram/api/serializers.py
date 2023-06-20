@@ -181,7 +181,7 @@ class RecipeWriteSerializer(ModelSerializer):
                 raise ValidationError("Колличество должно быть больше 0")
         return value
 
-    def validate_time(self, value):
+    def validate_cooking_time(self, value):
         if not value:
             raise ValidationError("Нужно написать время приготовления")
         for item in value:

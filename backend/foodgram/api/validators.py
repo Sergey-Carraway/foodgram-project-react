@@ -31,7 +31,7 @@ def validate_ingredients(value):
     return value
 
 
-def validate_time(value):
+def validate_cooking_time(value):
     if not value:
         raise ValidationError("Нужно написать время приготовления")
     for item in value:
