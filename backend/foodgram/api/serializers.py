@@ -181,14 +181,6 @@ class RecipeWriteSerializer(ModelSerializer):
                 raise ValidationError("Колличество должно быть больше 0")
         return value
 
-    def validate_cooking_time(self, value):
-        if not value:
-            raise ValidationError("Нужно написать время приготовления")
-        for item in value:
-            if item["amount"] <= 0:
-                raise ValidationError("Приготовление занимает не менее 1 мин")
-        return value
-
     @transaction.atomic
     def create_ingredients(self, ingredients, recipe):
         RecipeIngredients.objects.bulk_create(
