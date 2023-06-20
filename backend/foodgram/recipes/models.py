@@ -2,7 +2,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint
 
-from api.validators import validate_ingredients, validate_year
+from api.validators import validate_ingredients, validate_year, validate_time
 from users.models import User
 
 
@@ -56,7 +56,7 @@ class Recipe(models.Model):
         verbose_name="Ингридиенты",
         through="RecipeIngredients",
         related_name="recipes",
-        validators=(validate_ingredients,),
+        validators=(validate_ingredients, validate_time),
     )
 
     tags = models.ManyToManyField(
