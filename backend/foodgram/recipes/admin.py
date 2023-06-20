@@ -27,7 +27,7 @@ class RecipeIngredientsInLine(admin.TabularInline):
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ("pk", "name", "author", "text", "cooking_time", "image",
-                    "date")
+                    "date", "favarite_count")
     search_fields = ("name", "author__username", "text", "cooking_time",)
     list_filter = ("name", "author__username", "tags")
     readonly_fields = ("favarite_count",)
@@ -37,6 +37,8 @@ class RecipeAdmin(admin.ModelAdmin):
     def favarite_count(self, obj):
         """Получаем количество избранных"""
         return obj.favorites.count()
+
+    favarite_count.short_description = "favarite_count"
 
 
 @admin.register(ShoppingCart)
