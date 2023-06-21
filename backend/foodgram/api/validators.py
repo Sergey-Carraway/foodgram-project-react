@@ -1,6 +1,7 @@
 import datetime as dt
 
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 
 
 def validate_username(value):
@@ -24,10 +25,10 @@ def validate_year(value):
 
 def validate_ingredients(value):
     if not value:
-        raise ValidationError("Нужно добавить ингридиент.")
+        raise ValidationError(_("Нужно добавить ингридиент."))
     for item in value:
         if item["amount"] <= 0:
-            raise ValidationError("Колличество должно быть больше 0")
+            raise ValidationError(_("Колличество должно быть больше 0"))
     return value
 
 

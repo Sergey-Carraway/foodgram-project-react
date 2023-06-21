@@ -173,13 +173,13 @@ class RecipeWriteSerializer(ModelSerializer):
         context = {"request": request}
         return RecipeReadSerializer(instance, context=context).data
 
-    def validate_ingredients(self, ingredients):
-        if not ingredients:
-            raise serializers.ValidationError("Нужно добавить ингридиент.")
-        for ingredient in ingredients:
-            if ingredient["amount"] <= 0:
-                raise serializers.ValidationError("Колличество должно быть больше 0")
-        return ingredients
+    def validate_ingredients(self, value):
+        if not value:
+            raise ValidationError("Нужно добавить ингридиент.")
+        for item in value:
+            if item["amount"] <= 0:
+                raise ValidationError("Колличество должно быть больше 0")
+        return value
 
     @transaction.atomic
     def create_ingredients(self, ingredients, recipe):
