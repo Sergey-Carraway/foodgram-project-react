@@ -41,6 +41,13 @@ class RecipeAdmin(admin.ModelAdmin):
     favarite_count.short_description = "Количество избранных"
 
 
+@admin.register(RecipeIngredients)
+class RecipeIngridientsAdmin(admin.ModelAdmin):
+    list_display = ("pk", "recipe", "ingredient", "amount")
+    search_fields = ("recipe__name", "ingredient")
+    list_filter = ("recipe", "ingredient")
+
+
 @admin.register(ShoppingCart)
 class ShoppingCartAdmin(admin.ModelAdmin):
     list_display = (
