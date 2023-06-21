@@ -100,6 +100,11 @@ class IngredientInRecipeCreateSerializer(ModelSerializer):
         data["id"] = instance.ingredient.id
         return data
 
+    def validate_amount(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Колличество должно быть больше 0")
+        return value
+
 
 class RecipeReadSerializer(ModelSerializer):
     """Сериализатор получения рецепта."""
@@ -161,7 +166,6 @@ class RecipeWriteSerializer(ModelSerializer):
             "image",
             "text",
             "cooking_time",
-            "amount"
         )
 
     def validate_tags(self, value):
@@ -173,11 +177,6 @@ class RecipeWriteSerializer(ModelSerializer):
         request = self.context.get("request")
         context = {"request": request}
         return RecipeReadSerializer(instance, context=context).data
-
-    def validate_amount(self, value):
-        if value <= 0:
-            raise serializers.ValidationError("Колличество должно быть больше 0")
-        return value
 
     @transaction.atomic
     def create_ingredients(self, ingredients, recipe):
