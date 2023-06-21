@@ -52,12 +52,11 @@ class Recipe(models.Model):
     name = models.CharField(verbose_name="Название", max_length=200)
     image = models.ImageField(verbose_name="Картинка", upload_to="recipes/")
     text = models.TextField(verbose_name="Текст")
-    ingredients = models.ForeignKey(
-        "Ingredient",
+    ingredients = models.ManyToManyField(
+        Ingredient,
         verbose_name="Ингридиенты",
         through="RecipeIngredients",
         related_name="recipes",
-        validators=(validate_ingredients,)
     )
 
     tags = models.ManyToManyField(
