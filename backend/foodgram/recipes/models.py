@@ -64,7 +64,6 @@ class Recipe(models.Model):
     )
     cooking_time = models.PositiveSmallIntegerField(
         verbose_name="Время приготовления",
-        validators=(validate_cooking_time,)
     )
     date = models.DateTimeField(
         verbose_name="Дата публикации", validators=(validate_year,),
