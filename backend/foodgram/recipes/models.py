@@ -1,9 +1,8 @@
-from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint
 
-from api.validators import validate_year, validate_cooking_time, validate_ingredients
+from api.validators import (validate_year, validate_cooking_time,
+                            validate_amount)
 from users.models import User
 
 
@@ -96,7 +95,7 @@ class RecipeIngredients(models.Model):
         related_name="recipeingredients",
     )
     amount = models.PositiveSmallIntegerField(
-        verbose_name="Колличество", validators=(MinValueValidator(1),)
+        verbose_name="Колличество", validators=(validate_amount,)
     )
 
     class Meta:
