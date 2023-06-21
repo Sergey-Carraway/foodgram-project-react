@@ -1,5 +1,5 @@
 import datetime as dt
-
+from djoser.serializers import UserSerializer
 from django.core.exceptions import ValidationError
 
 
@@ -22,13 +22,13 @@ def validate_year(value):
     return value
 
 
-def validate_ingredients(value):
-    if not value:
+def validate_ingredients(self, ingredients):
+    if not ingredients:
         raise ValidationError("Нужно добавить ингридиент.")
-    for item in value:
-        if item["amount"] <= 0:
+    for ingredient in ingredients:
+        if ingredient["amount"] <= 0:
             raise ValidationError("Колличество должно быть больше 0")
-    return value
+    return ingredients
 
 
 def validate_cooking_time(value):
