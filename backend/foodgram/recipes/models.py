@@ -102,9 +102,6 @@ class RecipeIngredients(models.Model):
     class Meta:
         verbose_name = "ингридиент для рецепта"
         verbose_name_plural = "ингридиенты для рецепта"
-        constraints = [
-            models.CheckConstraint(check=models.Q(amount__gt=0), name='amount_gt_0'),
-        ]
 
     def __str__(self):
         return f"{str(self.ingredient)} in {str(self.recipe)}-{self.amount}"
