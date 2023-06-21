@@ -44,7 +44,7 @@ class RecipeAdmin(admin.ModelAdmin):
 @admin.register(RecipeIngredients)
 class RecipeIngridientsAdmin(admin.ModelAdmin):
     list_display = ("pk", "recipe", "ingredient", "amount")
-    search_fields = ("recipe__name", "ingredient")
+    search_fields = ("recipe", "ingredient")
     list_filter = ("recipe", "ingredient")
 
 
