@@ -53,7 +53,7 @@ class Recipe(models.Model):
     image = models.ImageField(verbose_name="Картинка", upload_to="recipes/")
     text = models.TextField(verbose_name="Текст")
     ingredients = models.ForeignKey(
-        Ingredient,
+        "Ingredient",
         verbose_name="Ингридиенты",
         through="RecipeIngredients",
         related_name="recipes",
