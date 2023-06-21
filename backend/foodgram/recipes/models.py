@@ -57,7 +57,6 @@ class Recipe(models.Model):
         verbose_name="Ингридиенты",
         through="RecipeIngredients",
         related_name="recipes",
-        validators= (validate_ingredients,)
     )
 
     tags = models.ManyToManyField(
