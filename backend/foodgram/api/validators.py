@@ -35,6 +35,6 @@ def validate_cooking_time(value):
     if not value:
         raise ValidationError("Нужно написать время приготовления")
     for item in range(value):
-        if item["amount"] <= 0:
+        if str(item["amount"]) <= 0:
             raise ValidationError("Приготовление занимает не менее 1 мин")
     return value
